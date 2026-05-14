@@ -1,4 +1,4 @@
-package com.yabe.coffee_house;
+package com.yabe.coffeehouse;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
