@@ -5,6 +5,7 @@ import com.yabe.coffee.shop.respository.CoffeeHouseRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Service
@@ -16,9 +17,6 @@ public class CoffeeSaleServiceImpl implements  CoffeeSaleService {
         this.coffeeHouseRepository = coffeeHouseRepository;
     }
 
-    public void saveIndividualSale(CoffeeSaleData coffeeSaleData) {
-        coffeeHouseRepository.save(coffeeSaleData);
-    }
 
     @Override
     public void saveIndividualSale(Double price, Integer quantity, String coffeeType, String coffeeName) {
@@ -35,6 +33,13 @@ public class CoffeeSaleServiceImpl implements  CoffeeSaleService {
 
     public BigDecimal getTotalSalesAmount() {
         return coffeeHouseRepository.getTotalSalesAmount();
+    }
+
+    @Override
+    public List<CoffeeSaleData> getCoffeeByName(String coffeeName) {
+        Logger logger = Logger.getLogger(CoffeeSaleServiceImpl.class.getName());
+        logger.info("Fetching coffee by name: " + coffeeName);
+        return coffeeHouseRepository.findByCoffeeName(coffeeName);
     }
 
 }
