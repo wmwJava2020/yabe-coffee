@@ -45,7 +45,7 @@ public class CoffeeHouseController {
         try {
             logger.info("Searching coffee by name: " + coffeeName);
             List<CoffeeSaleData> coffeeList = coffeeSaleServiceImpl.getCoffeeByName(coffeeName);
-
+            System.out.println("TESTING  FOR JENKINS DEPLOYEMNTS.........");
             if (coffeeList.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(new ApiResponse<>(false, "No coffee found with name: " + coffeeName, null));
