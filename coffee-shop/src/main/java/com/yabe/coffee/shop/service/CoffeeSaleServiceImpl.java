@@ -33,6 +33,7 @@ public class CoffeeSaleServiceImpl implements  CoffeeSaleService {
     }
 
     public BigDecimal getTotalSalesAmount() {
+        System.out.println("TEST FOR JENKINS TUTORIAL");
         return coffeeHouseRepository.getTotalSalesAmount();
     }
 
