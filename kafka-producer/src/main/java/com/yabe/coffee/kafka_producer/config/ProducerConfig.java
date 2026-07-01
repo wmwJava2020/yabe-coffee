@@ -5,10 +5,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class KafkaProducerConfig {
+public class ProducerConfig {
+
 
     @Bean
     public NewTopic createNewTopic(){
-        return new NewTopic("coffee-topic-105", 5, (short) 1);
+        return new NewTopic("custom-topic0", 1, (short) 1);
     }
 }
+
