@@ -18,8 +18,10 @@ public class CoffeeAccountController {
 
     @PostMapping("/totalSales")
     public Double saveTotalSalesFromCoffeeHouse() {
-        return coffeeAccount.saveTotalSalesFromCoffeeHouse();
+        return coffeeAccount.coffeeSale(10, 5.0).doubleValue();
 
 }
+
+
 
 }

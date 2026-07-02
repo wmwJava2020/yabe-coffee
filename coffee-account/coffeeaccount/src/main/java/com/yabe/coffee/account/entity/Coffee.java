@@ -10,13 +10,14 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "tbl_account")
 @Data
-public class CoffeeAccountEntity {
+public class Coffee {
 
     Long cnt = System.currentTimeMillis();
     @Id
-    private Long id = cnt;
-    private String coffeeName;
-    private Double totalSale;
-    private Integer totalQuantity;
+    private Long id = Long.valueOf(cnt.toString().substring(0,6));
+    private String coffeeType;
+    private Double unitPrice;
+    private Integer quantity;
     private LocalDateTime lastAccessed;
+
 }

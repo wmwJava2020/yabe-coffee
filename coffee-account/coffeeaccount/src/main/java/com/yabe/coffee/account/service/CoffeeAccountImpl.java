@@ -1,6 +1,6 @@
 package com.yabe.coffee.account.service;
 
-import com.yabe.coffee.account.entity.CoffeeAccountEntity;
+import com.yabe.coffee.account.entity.Coffee;
 import com.yabe.coffee.account.repository.CoffeeAccountRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -11,35 +11,32 @@ import java.time.LocalDateTime;
 @Service
 public class CoffeeAccountImpl implements CoffeeAccount {
 
-    private final CoffeeAccountRepository coffeeAccountRepository;
+    private final CoffeeAccountRepository coffeeRepository;
     private final RestTemplate restTemplate;
 
-    public CoffeeAccountImpl(CoffeeAccountRepository coffeeAccountRepository, RestTemplate restTemplate) {
-        this.coffeeAccountRepository = coffeeAccountRepository;
+    public CoffeeAccountImpl(CoffeeAccountRepository coffeeRepository, RestTemplate restTemplate) {
+        this.coffeeRepository = coffeeRepository;
         this.restTemplate = restTemplate;
     }
 
-    public Double saveTotalSalesFromCoffeeHouse() {
+    @Override
+    public Coffee saveCoffee(Coffee coffee) {
+        return coffeeRepository.save(coffee);
+    }
 
+    @Override
+    public BigDecimal coffeeSale(Integer quantity, Double unitPrice) {
         BigDecimal totalSales = restTemplate.getForObject(
-                "http://localhost:8080/api/v1/coffeehouse/total",
+                "http://localhost:8012/api/v1/coffeehouse/total",
                 BigDecimal.class
         );
 
+        Coffee coffee = new Coffee();
+        coffee.setQuantity(quantity);
+        coffee.setUnitPrice(unitPrice);
+        coffee.setLastAccessed(LocalDateTime.now());
+        coffeeRepository.save(coffee);
 
-        CoffeeAccountEntity account = new CoffeeAccountEntity();
-        account.setCnt(System.currentTimeMillis());
-        assert totalSales != null;
-        account.setTotalSale(totalSales.doubleValue());
-        account.setTotalQuantity(1);
-        account.setLastAccessed(LocalDateTime.now());
-
-        coffeeAccountRepository.save(account);
-
-        return account.getTotalSale();
-
+        return totalSales;
     }
-
-
-
 }
