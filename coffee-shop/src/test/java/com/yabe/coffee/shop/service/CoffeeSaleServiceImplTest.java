@@ -23,10 +23,7 @@ class CoffeeSaleServiceImplTest {
     @InjectMocks
     private CoffeeSaleServiceImpl coffeeSaleService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+
 
     @Test
     void testSaveIndividualSale() {
