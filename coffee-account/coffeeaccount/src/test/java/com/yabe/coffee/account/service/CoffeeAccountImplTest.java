@@ -3,7 +3,7 @@ package com.yabe.coffee.account.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.yabe.coffee.account.entity.CoffeeAccountEntity;
+import com.yabe.coffee.account.entity.Coffee;
 import com.yabe.coffee.account.repository.CoffeeAccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,30 +35,29 @@ class CoffeeAccountImplTest {
     void testSaveTotalSalesFromCoffeeHouse_Success() {
         BigDecimal expectedTotalSales = new BigDecimal("1500.50");
         when(restTemplate.getForObject(
-                "http://localhost:8080/api/v1/coffeehouse/total",
+                "http://localhost:8012/api/v1/coffeehouse/total",
                 BigDecimal.class
         )).thenReturn(expectedTotalSales);
 
-        Double result = coffeeAccountService.saveTotalSalesFromCoffeeHouse();
+        Double result = coffeeAccountService.coffeeSale(10, 150.05).doubleValue();
 
         assertEquals(1500.50, result);
-        verify(coffeeAccountRepository, times(1)).save(any(CoffeeAccountEntity.class));
+        verify(coffeeAccountRepository, times(1)).save(any(Coffee.class));
     }
 
     @Test
     void testSaveTotalSalesFromCoffeeHouse_VerifyEntityData() {
         BigDecimal expectedTotalSales = new BigDecimal("2500.75");
         when(restTemplate.getForObject(
-                "http://localhost:8080/api/v1/coffeehouse/total",
+                "http://localhost:8012/api/v1/coffeehouse/total",
                 BigDecimal.class
         )).thenReturn(expectedTotalSales);
 
-        coffeeAccountService.saveTotalSalesFromCoffeeHouse();
-
-        //ArgumentCaptor<CoffeeAccountEntity> captor = ArgumentCaptor.forClass(CoffeeAccountEntity.class);
+        coffeeAccountService.coffeeSale(10, 250.075);
+        //ArgumentCaptor<Coffee> captor = ArgumentCaptor.forClass(Coffee.class);
         //verify(coffeeAccountRepository).save(captor.getValue());
 
-        //CoffeeAccountEntity savedEntity = captor.getValue();
+        //Coffee savedEntity = captor.getValue();
         //assertEquals(2500.75, savedEntity.getTotalSale());
         //assertEquals(1, savedEntity.getTotalQuantity());
         //assertNotNull(savedEntity.getLastAccessed());
@@ -68,11 +67,11 @@ class CoffeeAccountImplTest {
     void testSaveTotalSalesFromCoffeeHouse_ReturnsCorrectValue() {
         BigDecimal expectedTotalSales = new BigDecimal("999.99");
         when(restTemplate.getForObject(
-                "http://localhost:8080/api/v1/coffeehouse/total",
+                "http://localhost:8012/api/v1/coffeehouse/total",
                 BigDecimal.class
         )).thenReturn(expectedTotalSales);
 
-        Double result = coffeeAccountService.saveTotalSalesFromCoffeeHouse();
+        Double result = coffeeAccountService.coffeeSale(10, 99.99).doubleValue();
 
         assertEquals(999.99, result);
     }
@@ -80,14 +79,14 @@ class CoffeeAccountImplTest {
     @Test
     void testSaveTotalSalesFromCoffeeHouse_CallsRestTemplate() {
         when(restTemplate.getForObject(
-                "http://localhost:8080/api/v1/coffeehouse/total",
+                "http://localhost:8012/api/v1/coffeehouse/total",
                 BigDecimal.class
         )).thenReturn(new BigDecimal("100.00"));
 
-        coffeeAccountService.saveTotalSalesFromCoffeeHouse();
+        coffeeAccountService.coffeeSale(10, 10.0);
 
         verify(restTemplate, times(1)).getForObject(
-                "http://localhost:8080/api/v1/coffeehouse/total",
+                "http://localhost:8012/api/v1/coffeehouse/total",
                 BigDecimal.class
         );
     }
