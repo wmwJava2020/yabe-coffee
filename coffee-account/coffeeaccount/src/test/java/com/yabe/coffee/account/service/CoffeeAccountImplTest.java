@@ -7,14 +7,16 @@ import com.yabe.coffee.account.entity.Coffee;
 import com.yabe.coffee.account.repository.CoffeeAccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-
+@ExtendWith(MockitoExtension.class)
 class CoffeeAccountImplTest {
 
     @Mock
@@ -26,10 +28,7 @@ class CoffeeAccountImplTest {
     @InjectMocks
     private CoffeeAccountImpl coffeeAccountService;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
+
 
     @Test
     void testSaveTotalSalesFromCoffeeHouse_Success() {
