@@ -4,7 +4,7 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 # Copy JAR — consistent naming, all uppercase SNAPSHOT
-COPY target/coffee-house-0.0.1-snapshot.jar app.jar
+COPY target/*.jar app.jar
 
 # Your custom port
 EXPOSE 8012
