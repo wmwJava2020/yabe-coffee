@@ -35,8 +35,12 @@ pipeline {
 
         stage('Docker Build') {
             steps {
+                // coffee-shop — Dockerfile in coffee-shop/ root
                 bat "docker build -t %SHOP_IMAGE%:%DOCKER_TAG% ./coffee-shop"
+
+                // coffee-account — Dockerfile AND target/ are in coffeeaccount/
                 bat "docker build -t %ACCOUNT_IMAGE%:%DOCKER_TAG% ./coffee-account/coffeeaccount"
+
                 bat "docker tag %SHOP_IMAGE%:%DOCKER_TAG% %SHOP_IMAGE%:latest"
                 bat "docker tag %ACCOUNT_IMAGE%:%DOCKER_TAG% %ACCOUNT_IMAGE%:latest"
             }
