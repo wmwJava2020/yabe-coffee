@@ -36,7 +36,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 bat "docker build -t %SHOP_IMAGE%:%DOCKER_TAG% ./coffee-shop"
-                bat "docker build -t %ACCOUNT_IMAGE%:%DOCKER_TAG% ./coffee-account"
+                bat "docker build -t %ACCOUNT_IMAGE%:%DOCKER_TAG% ./coffee-account/coffeeaccount"
                 bat "docker tag %SHOP_IMAGE%:%DOCKER_TAG% %SHOP_IMAGE%:latest"
                 bat "docker tag %ACCOUNT_IMAGE%:%DOCKER_TAG% %ACCOUNT_IMAGE%:latest"
             }
