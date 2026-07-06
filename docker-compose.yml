@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: coffee-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root1
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - coffee-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  coffee-shop:
+    image: tokiandjack/coffee-shop:latest
+    container_name: coffee-shop
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/coffee?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root1
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 8080
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - coffee-network
+    restart: on-failure
+
+  coffee-account:
+    image: tokiandjack/coffee-account:latest
+    container_name: coffee-account
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/account?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root1
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 8081
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - coffee-network
+    restart: on-failure
+
+volumes:
+  mysql-data:
+
+networks:
+  coffee-network:
+    driver: bridge
